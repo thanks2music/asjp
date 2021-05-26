@@ -1,0 +1,82 @@
+<h1>{{ 'customer.account.title' | t }}</h1>
+
+<p>
+  予約・受注生産商品の予約受付期間終了時点までのキャンセルはお受付致します。<br>予約受付期間終了後、出荷までの期間についてはキャンセルはできませんので予めご了承ください。
+</p>
+
+
+<p>
+  会員様のマイページステータスが「注文受付中」の場合にはキャンセルはお受付致します。<br>「発送処理中」もしくは「発送済み」の状態はキャンセルできませんので予めご了承ください。
+</p>
+
+
+<h3>「paidy」払いでキャンセルご希望の方</h3>
+<p>
+「paidy」払いでキャンセルご希望の方は、こちらのマイページにて自動キャンセル処理ができないため、<br>お手数ですが、support@anime-store.jp　までご連絡ください。
+</p>
+
+
+<hr class="hr--small">
+
+<div class="grid">
+
+  <div class="grid-item two-thirds medium-down--one-whole">
+    <h2 class="h4">{{ 'customer.orders.title' | t }}</h2>
+
+    {% paginate customer.orders by 20 %}
+    {% if customer.orders.size != 0 %}
+
+      <table class="full">
+        <thead>
+          <tr>
+            <th>{{ 'customer.orders.order_number' | t }}</th>
+            <th>{{ 'customer.orders.date' | t }}</th>
+            <th>{{ 'customer.orders.payment_status' | t }}</th>
+            <th>{{ 'customer.orders.fulfillment_status' | t }}</th>
+            <th>{{ 'customer.orders.total' | t }}</th>
+<!--BeginOrderifyTh-->
+<th>注文の編集</th>
+
+<!--EndOrderifyTh-->
+          </tr>
+        </thead>
+        <tbody>
+          {% for order in customer.orders %}
+            <tr>
+              <td>{{ order.name | link_to: order.customer_url }}</td>
+              <td>{{ order.created_at | date: format: 'date' }}</td>
+              <td>{{ order.financial_status_label }}</td>
+              <td>{{ order.fulfillment_status_label }}</td>
+              <td>{{ order.total_price | money }}</td>
+<!--BeginOrderifyTd-->
+<td><a target="_blank" href="https://shopify-order-edit.herokuapp.com/order-editor/anime-store-jp.myshopify.com/{{order.id}}">キャンセル</a></td>
+
+<!--EndOrderifyTd-->
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+    {% else %}
+
+      <p>{{ 'customer.orders.none' | t }}</p>
+
+    {% endif %}
+
+    {% if paginate.pages > 1 %}
+    <div class="text-center">
+      {% include 'pagination-custom' %}
+    </div>
+    {% endif %}
+    {% endpaginate %}
+  </div>
+
+  <div class="grid-item one-third medium-down--one-whole">
+    <h2 class="h4">{{ 'customer.account.details' | t }}</h2>
+
+    {{ customer.default_address | format_address }}
+
+    <p><a href="{{ routes.account_addresses_url }}">{{ 'customer.account.view_addresses' | t }} ({{ customer.addresses_count }})</a></p>
+  </div>
+
+</div>

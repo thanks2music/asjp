@@ -1,0 +1,48 @@
+{% include 'breadcrumb' %}
+
+<div class="grid">
+
+  <div class="grid-item large--two-thirds push--large--one-sixth">
+
+    <h2>{{ page.title }}</h2>
+
+    <div class="rte">
+      {{ page.content }}
+    </div>
+
+    <div>
+      {% form 'contact' %}
+
+        {% if form.posted_successfully? %}
+          <p class="note form-success">
+            {{ 'contact.form.post_success' | t }}
+          </p>
+        {% endif %}
+
+        {% include 'form-errors-custom' %}
+
+        <div id="contactFormWrapper">
+          <label for="contactFormName">{{ 'contact.form.name' | t }}<span class="formrequired">（必須）</span></label>
+          <input required class=”required” type="text" id="contactFormName" name="contact[{{ 'contact.form.name' | t }}]" placeholder="{{ 'contact.form.name' | t }}" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}">
+
+          <label for="contactFormEmail">{{ 'contact.form.email' | t }}<span class="formrequired">（必須）</span></label>
+          <input required class=”required” type="email" id="contactFormEmail" name="contact[email]" placeholder="{{ 'contact.form.email' | t }}" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}">
+
+          <label for="contactFormOrderid">注文番号<span class="formrequired">（必須）</span><span class="formetc">※複数ある場合はスペースで区切って下さい。</span></label>
+          <input required class=”required” type="text" id="contactFormOrderid" name="contact[注文番号]" placeholder="ない場合は「なし」とご記入下さい。" value="">
+          
+          <label for="contactFormPhone">{{ 'contact.form.phone' | t }}</label>
+          <input type="tel" id="contactFormPhone" name="contact[{{ 'contact.form.phone' | t }}]" placeholder="{{ 'contact.form.phone' | t }}" value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}">
+
+          <label for="contactFormMessage">{{ 'contact.form.message' | t }}<span class="formrequired">（必須）</span></label>
+          <textarea required class=”required” rows="10" id="contactFormMessage" name="contact[{{ 'contact.form.message' | t }}]" placeholder="{{ 'contact.form.message' | t }}">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+
+          <input type="submit" class="btn right" value="{{ 'contact.form.send' | t }}">
+        </div>
+
+      {% endform %}
+    </div>
+
+  </div>
+
+</div>
