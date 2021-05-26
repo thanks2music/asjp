@@ -22,18 +22,18 @@
               </a>
               {% unless item.product.has_only_default_variant %}
                 <br>
-                <small>{{ item.variant.title }}</small>
+                <small class="item-product-has_only_default_variant">{{ item.variant.title }}</small>
               {% endunless %}
 
               {% unless item.selling_plan_allocation == nil %}
                 <br>
-                <small>{{ item.selling_plan_allocation.selling_plan.name }}</small>
+                <small class="item-selling_plan_allocation">{{ item.selling_plan_allocation.selling_plan.name }}</small>
               {% endunless %}
 
               {% if settings.product_quantity_message and item.variant.inventory_management and item.variant.inventory_quantity <= 0 and item.variant.incoming %}
                 {% assign date = item.variant.next_incoming_date | date: format: 'date' %}
                 <br>
-                <small>{{ 'products.product.will_not_ship_until' | t: date: date }}</small>
+                <small class="settings-product_quantity_message">{{ 'products.product.will_not_ship_until' | t: date: date }}</small>
               {% endif %}
 
               {% assign property_size = item.properties | size %}
